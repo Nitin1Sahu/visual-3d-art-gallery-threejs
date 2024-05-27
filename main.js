@@ -36,10 +36,17 @@ scene.add(sunLight);
 //Object
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial({
-    color: 0x111111 ,
-    wireframe: true,
+    color: 0x111111,
 });
 const cube = new THREE.Mesh(geometry, material); // create cute with geometry andd material
 scene.add(cube); // add cube to scene
-// Render
-renderer.render(scene, camera);
+// Animate renderer loop
+const Animate = () => {
+    requestAnimationFrame(Animate);
+    // Update
+    cube.rotation.x += 0.01;
+    cube.rotation.y += 0.01;
+    // Render
+    renderer.render(scene, camera);
+};
+Animate();
