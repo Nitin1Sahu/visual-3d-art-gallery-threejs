@@ -30,8 +30,16 @@ let ambientLight = new THREE.AmbientLight(0x101010, 1.0); // color, intensity, d
 ambientLight.position.copy(camera.position); // Light follow camera
 scene.add(ambientLight);
 // Directional Light
-let sunLight = new THREE.DirectionalLight(0xdddddd, 1.0) // color intensity
+let sunLight = new THREE.DirectionalLight(0xdddddd, 1.0); // color intensity
 sunLight.position.y = 15;
 scene.add(sunLight);
+//Object
+const geometry = new THREE.BoxGeometry(1, 1, 1);
+const material = new THREE.MeshBasicMaterial({
+    color: 0x111111 ,
+    wireframe: true,
+});
+const cube = new THREE.Mesh(geometry, material); // create cute with geometry andd material
+scene.add(cube); // add cube to scene
 // Render
 renderer.render(scene, camera);
