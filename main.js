@@ -1,5 +1,6 @@
 import "./style.css";
 import * as THREE from "three";
+import { PointerLockControls } from "three-stdlib";
 // Scene
 const scene = new THREE.Scene(); // create the scene
 // Sizes
@@ -63,29 +64,96 @@ plane.position.y = -Math.PI; // this is -180 degrees
 // Add the floor mesh to the scene
 scene.add(plane);
 
+const ceilingGeometry = new THREE.PlaneGeometry(20, 20);
+const ceilingMaterial = new THREE.MeshBasicMaterial({ map: floorTexture });
+const ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
+ceiling.rotation.x = Math.PI / 2;
+ceiling.position.y = 10;
+scene.add(ceiling)
+
+// Create the walls
+const wallGroup = new THREE.Group(); // create a group to hold the walls
+scene.add(wallGroup); // add the group to the scene
+const wallTexture = textureLoader.load("textures/wall.jpg");
+
+// front wall
+const frontWall = new THREE.Mesh(
+    new THREE.BoxGeometry(20, 20, 0.001),
+    new THREE.MeshBasicMaterial({ map: wallTexture}),
+);
+frontWall.position.z = -10;
+// Left wall
+const leftWall = new THREE.Mesh(
+    new THREE.BoxGeometry(50, 20, 0.001),
+    new THREE.MeshBasicMaterial({ map: wallTexture }),
+);
+leftWall.rotation.y = Math.PI / 2;
+leftWall.position.x = -10;
+// Right wall
+const rightWall = new THREE.Mesh(
+    new THREE.BoxGeometry(50, 20, 0.001),
+    new THREE.MeshBasicMaterial({ map: wallTexture }),
+);
+rightWall.rotation.y = -Math.PI / 2;
+rightWall.position.x = 10;
+
+wallGroup.add(frontWall, leftWall, rightWall);
+
+// Loop through each wall and create a bounding box for it
+for(let i = 0; i < wallGroup.children.length; i++) {
+    const wall = wallGroup.children[i]
+    const box = new THREE.Box3().setFromObject(wall);
+    console.log(box);
+}
+
+// Create the door )
+
 // function when key is pressed, execute the function
 function onKeyDown(event) {
     switch (event.keyCode) {
         case 37: // left
             cube.translateX(0.05);
+            // plane.translateX(0.05);
             break;
         case 38: // top
-            cube.translateY(-0.05);
+            cube.translateZ(-0.05);
+            // plane.translateY(-0.05);
             break;
         case 39: // right
             cube.translateX(-0.05);
+            // plane.translateX(-0.05);
             break;
         case 40: // bottom
-            cube.translateY(0.05);
+            cube.translateZ(0.05);
+            // plane.translateY(0.05);
             break;
+        /*
+            
+             case 37: // left
+            cube.translateX(-0.05);
+            plane.translateX(-0.05);
+            break;
+        case 38: // up
+            cube.translateY(0.05);
+            plane.translateY(0.05);
+            break;
+        case 39: // right
+            cube.translateX(0.05);
+            plane.translateX(0.05);
+            break;
+        case 40: // down
+            cube.translateY(-0.05);
+            plane.translateY(-0.05);
+            break;
+            */
     }
 }
 // Animate renderer loop
 const Animate = () => {
     requestAnimationFrame(Animate);
     // Update
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    // cube.rotation.x += 0.01;
+    // cube.rotation.y += 0.01;
     // Render
     renderer.render(scene, camera);
 };
