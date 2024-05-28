@@ -40,12 +40,33 @@ const material = new THREE.MeshBasicMaterial({
 });
 const cube = new THREE.Mesh(geometry, material); // create cute with geometry andd material
 scene.add(cube); // add cube to scene
+
+// Controls
+// EventListener for, when we press the keys
+window.addEventListener("keydown", onKeyDown, false);
+// function when key is pressed, execute the function
+function onKeyDown(event) {
+    switch (event.keyCode) {
+        case 37: // left
+            cube.translateX(0.05);
+            break;
+        case 38: // top
+            cube.translateY(-0.05);
+            break;
+        case 39: // right
+            cube.translateX(-0.05);
+            break;
+        case 40: // bottom
+            cube.translateY(0.05);
+            break;  
+    }
+}
 // Animate renderer loop
 const Animate = () => {
     requestAnimationFrame(Animate);
     // Update
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    // cube.rotation.x += 0.01;
+    // cube.rotation.y += 0.01;
     // Render
     renderer.render(scene, camera);
 };
