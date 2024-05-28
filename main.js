@@ -45,14 +45,24 @@ scene.add(cube); // add cube to scene
 // Controls
 // EventListener for, when we press the keys
 window.addEventListener("keydown", onKeyDown, false);
+
+// Texture
+// Create a texture loader
+const textureLoader = new THREE.TextureLoader();
+
+// Load the texture
+const floorTexture = textureLoader.load("textures/floor.jpg");
+
+// You can use the texture as needed, for example, in a material
 // create the floor plane.
-const planeGeometry = new THREE.PlaneGeometry(50, 50);
-const planeMaterial = new THREE.MeshBasicMaterial({
-    color: "green",
-    side: THREE.DoubleSide
-});
-const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+const floorGeometry = new THREE.PlaneGeometry(20, 20);
+const floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture });
+const plane = new THREE.Mesh(floorGeometry, floorMaterial);
+plane.rotation.x = -Math.PI * 0.5; // this is 90 degree rotation
+plane.position.y = -Math.PI; // this is -180 degrees
+// Add the floor mesh to the scene
 scene.add(plane);
+
 // function when key is pressed, execute the function
 function onKeyDown(event) {
     switch (event.keyCode) {
